@@ -1,0 +1,30 @@
+server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+
+target_model:
+  name: "meta-llama/Meta-Llama-3.1-70B-Instruct"
+  tensor_parallel_size: 4
+  gpu_memory_utilization: 0.90
+  max_model_len: 8192
+  kv_cache_dtype: "auto"
+
+draft_model:
+  name: "meta-llama/Llama-3.2-1B-Instruct"
+  tensor_parallel_size: 1
+  num_speculative_tokens: 5  # K=5 draft lookahead tokens
+
+speculative:
+  acceptance_threshold: 0.8
+  mode: "batch_verify"
+
+semantic_cache:
+  enabled: true
+  redis_url: "redis://localhost:6379/1"
+  similarity_threshold: 0.92
+  ttl_seconds: 7200
+
+monitoring:
+  prometheus_port: 9090
+  metrics_path: "/metrics"
